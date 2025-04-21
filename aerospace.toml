@@ -6,13 +6,18 @@
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
 after-login-command = []
 
-# You can use it to add commands that run after AeroSpace startup.
-# 'after-startup-command' is run after 'after-login-command'
-# Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = []
-
 # Start AeroSpace at login
-start-at-login = false
+start-at-login = true
+
+# Run Sketchybar together with AeroSpace
+# sketchbar has a built-in detection of already running process,
+# so it won't be run twice on AeroSpace restart
+after-startup-command = ['exec-and-forget sketchybar']
+
+# Notify Sketchybar about workspace change
+exec-on-workspace-change = ['/bin/bash', '-c',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -61,7 +66,7 @@ automatically-unhide-macos-hidden-apps = false
     inner.vertical =   0
     outer.left =       0
     outer.bottom =     0
-    outer.top =        0
+    outer.top =        40
     outer.right =      0
 
 # 'main' binding mode declaration
@@ -210,4 +215,33 @@ automatically-unhide-macos-hidden-apps = false
     down = 'volume down'
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
+
+
+[[on-window-detected]]
+if.app-id = "com.mitchellh.ghostty"
+run = [
+  # FIX: this is a workaround for https://github.com/nikitabobko/AeroSpace/issues/68
+  # this was also observed in:
+  # - https://github.com/ghostty-org/ghostty/issues/1840
+  # - https://github.com/ghostty-org/ghostty/issues/2006
+  "layout floating",
+  "move-node-to-workspace T",
+]
+
+# osascript -e 'id of app "zoom.us"' to get the app id
+[[on-window-detected]]
+if.app-id = "us.zoom.xos"
+run = [ "move-node-to-workspace Z" ]
+
+[[on-window-detected]]
+if.app-id = "com.tinyspeck.slackmacgap"
+run = [ "move-node-to-workspace S" ]
+
+[[on-window-detected]]
+if.app-id = "org.mozilla.firefox"
+run = [ "move-node-to-workspace F" ]
+
+[[on-window-detected]]
+if.app-id = "com.apple.Safari"
+run = [ "move-node-to-workspace B" ]
 
