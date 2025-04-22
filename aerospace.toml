@@ -15,7 +15,9 @@ start-at-login = true
 after-startup-command = ['exec-and-forget sketchybar']
 
 # Notify Sketchybar about workspace change
-exec-on-workspace-change = ['/bin/bash', '-c',
+exec-on-workspace-change = [
+    '/bin/bash', 
+    '-c',
     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
 
@@ -141,7 +143,6 @@ automatically-unhide-macos-hidden-apps = false
     alt-g = 'workspace G'
     alt-i = 'workspace I'
     alt-m = 'workspace M'
-    alt-n = 'workspace N'
     alt-o = 'workspace O'
     alt-p = 'workspace P'
     alt-q = 'workspace Q'
@@ -225,6 +226,19 @@ run = [
   # - https://github.com/ghostty-org/ghostty/issues/1840
   # - https://github.com/ghostty-org/ghostty/issues/2006
   "layout floating",
+  "move-node-to-workspace T",
+]
+
+
+[[on-window-detected]]
+if.app-id = "org.alacritty"
+run = [
+  "move-node-to-workspace T",
+]
+
+[[on-window-detected]]
+if.app-id = "com.github.wez.wezterm"
+run = [
   "move-node-to-workspace T",
 ]
 
